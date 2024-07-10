@@ -5,10 +5,6 @@ pipeline {
 		label "docker"
 	}
    } 
-
-    tools {
-	maven 'Maven Apache'
-    }
     stages {
         stage('Checkout') {
             steps {
