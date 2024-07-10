@@ -1,42 +1,33 @@
 pipeline {
+    environment {
+        JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
+    }
     agent {
-	docker {
-		image "maven:3.6.0-jdk-13"
-		label "docker"
-	}
-   } 
-
+        dockerfile {
+            filename 'Dockerfile' // Asegúrate de que el Dockerfile esté en el directorio raíz del proyecto
+            additionalBuildArgs '-v /tmp/maven:/home/jenkins/.m2 -e MAVEN_CONFIG=/home/jenkins/.m2'
+        }
+    }
     stages {
-        stage('Verify Docker Installation') {
+        stage('Checkout') {
             steps {
-                script {
-                    // Verifica que Docker esté instalado
-                    sh 'docker --version'
-                    
-
-                }
+                // Clonar el repositorio desde GitHub
+                git url: 'https://github.com/3ct-mx/spring-boot-computadoras.git', branch: 'main'
             }
         }
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                script {
-                    // Construye la imagen Docker usando el Dockerfile en el directorio de trabajo
-                    sh 'mvn clean'
-                }
+                // Compilar el proyecto usando Maven
+                sh 'mvn clean install'
             }
         }
     }
-    
     post {
-        always {
-            echo 'Pipeline completed'
-        }
         success {
-            echo 'Pipeline succeeded'
+            echo 'Build completed successfully!'
         }
         failure {
-            echo 'Pipeline failed'
+            echo 'Build failed.'
         }
     }
 }
-
