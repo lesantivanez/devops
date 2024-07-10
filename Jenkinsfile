@@ -3,8 +3,7 @@ pipeline {
         JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
     }
     agent {
-        docker {
-            image 'custom-maven:3.9.8-amazoncorretto-8-al2023'
+        dockerfile {
             args '-v /tmp/maven:/home/jenkins/.m2 -e MAVEN_CONFIG=/home/jenkins/.m2'
         }
     }
