@@ -8,8 +8,7 @@ pipeline {
                     // Verifica que Docker esté instalado
                     sh 'docker --version'
                     
-                    // Verifica el estado del servicio Docker (opcional)
-                    sh 'sudo systemctl status docker || echo "Docker service status check skipped (non-linux or insufficient permissions)"'
+
                 }
             }
         }
