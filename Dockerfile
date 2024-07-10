@@ -1,20 +1,20 @@
+# Usar una imagen base específica para Maven y JDK
 FROM maven:3.6.0-jdk-13
 
-RUN useradd -m  -u 1000 -s /bin/bash jenkins
+# Crear el usuario jenkins con un UID específico
+RUN useradd -m -u 1000 -s /bin/bash jenkins
 
+# Establecer el usuario jenkins como el usuario predeterminado
+USER jenkins
 
+# Directorio de trabajo predeterminado
+WORKDIR /home/jenkins
 
+# Añadir cualquier dependencia adicional que puedas necesitar
+# RUN yum install -y openssh-clients 
 
+# Añadir el resto de las instrucciones que necesites para configurar tu ambiente
 
-# Dockerfile
-#FROM maven:3.9.8-amazoncorretto-8-al2023
-
-# Instalar adduser si no está disponible
-#RUN yum install -y shadow-utils
-
-# Crear el usuario jenkins
-#RUN adduser -u 1000 -m -s /bin/bash jenkins
-
-# Establecer el usuario jenkins como el usuario actual
-#USER jenkins
+# Este comando establece el comando predeterminado a ejecutar cuando se inicia el contenedor
+CMD ["bash"]
 
