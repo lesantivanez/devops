@@ -1,34 +1,37 @@
 pipeline {
-    environment {
-        JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
-    }
-    agent {
-        dockerfile {
-            args '-v /tmp/maven:/home/jenkins/.m2 -e MAVEN_CONFIG=/home/jenkins/.m2'
-        }
-    }
+    agent any
+
     stages {
-        stage('Checkout') {
+        stage('Verify Docker Installation') {
             steps {
-                // Clonar el repositorio desde GitHub
-                git url: 'https://github.com/3ct-mx/spring-boot-computadoras.git', branch: 'main'
+                script {
+                    // Verifica que Docker esté instalado
+                    sh 'docker --version'
+                    
+                    // Verifica el estado del servicio Docker (opcional)
+                    sh 'sudo systemctl status docker || echo "Docker service status check skipped (non-linux or insufficient permissions)"'
+                }
             }
         }
-
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                // Compilar el proyecto usando Maven
-                sh 'mvn clean install'
+                script {
+                    // Construye la imagen Docker usando el Dockerfile en el directorio de trabajo
+                    sh 'docker build -t my-docker-image .'
+                }
             }
         }
     }
     
     post {
+        always {
+            echo 'Pipeline completed'
+        }
         success {
-            echo 'Build completed successfully!'
+            echo 'Pipeline succeeded'
         }
         failure {
-            echo 'Build failed.'
+            echo 'Pipeline failed'
         }
     }
 }
