@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+	docker {
+		image "maven:3.6.0-jdk-13"
+		label "docker"
+	}
+   } 
 
     stages {
         stage('Verify Docker Installation') {
@@ -16,7 +21,7 @@ pipeline {
             steps {
                 script {
                     // Construye la imagen Docker usando el Dockerfile en el directorio de trabajo
-                    sh 'docker build -t my-docker-image .'
+                    sh 'mvn clean'
                 }
             }
         }
