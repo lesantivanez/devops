@@ -8,7 +8,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Clonar el repositorio desde GitHub
-                git url: 'https://github.com/lesantivanez/devops.git', branch: 'main'
+                git url: 'https://github.com/lesantivanez/devops.git', branch: 'master'
             }
         }
         stage('Build') {
